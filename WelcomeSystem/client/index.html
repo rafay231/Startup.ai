@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StartupLaunchpad</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f9f9f9;
+      color: #333;
+      line-height: 1.6;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+    header {
+      background-color: #0070f3;
+      color: white;
+      padding: 1rem 0;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+    header .container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+    }
+    h1 {
+      margin: 0;
+      font-size: 1.8rem;
+    }
+    .logo {
+      font-weight: bold;
+      font-size: 1.5rem;
+    }
+    .hero {
+      text-align: center;
+      padding: 4rem 2rem;
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+      margin: 2rem 0;
+    }
+    .hero h2 {
+      font-size: 2.5rem;
+      margin-bottom: 1.5rem;
+      color: #0070f3;
+    }
+    .hero p {
+      font-size: 1.2rem;
+      color: #666;
+      max-width: 800px;
+      margin: 0 auto 2rem;
+    }
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      margin: 3rem 0;
+    }
+    .feature {
+      background: white;
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .feature:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    }
+    .feature h3 {
+      color: #0070f3;
+      margin-top: 0;
+    }
+    .feature-icon {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      color: #0070f3;
+    }
+    .cta {
+      text-align: center;
+      padding: 3rem;
+      background: linear-gradient(135deg, #0070f3, #00a2ff);
+      color: white;
+      border-radius: 10px;
+      margin: 3rem 0;
+    }
+    .cta h3 {
+      font-size: 2rem;
+      margin-bottom: 1.5rem;
+    }
+    .btn {
+      display: inline-block;
+      background-color: #fff;
+      color: #0070f3;
+      padding: 0.8rem 2rem;
+      border-radius: 5px;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 1.1rem;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+    .btn:hover {
+      background-color: #f3f3f3;
+      transform: translateY(-2px);
+    }
+    footer {
+      background-color: #333;
+      color: #fff;
+      padding: 2rem 0;
+      text-align: center;
+    }
+    .status {
+      background: #e6f7ff;
+      border-left: 4px solid #1890ff;
+      padding: 1rem;
+      margin: 2rem 0;
+      border-radius: 0 5px 5px 0;
+    }
+    @media (max-width: 768px) {
+      .features {
+        grid-template-columns: 1fr;
+      }
+      .hero h2 {
+        font-size: 2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <div class="logo">StartupLaunchpad</div>
+      <div>
+        <button id="loginBtn" class="btn">Login</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="status">
+      <strong>System Status:</strong> The full application is currently being optimized for the Replit environment. This is a simplified landing page.
+    </div>
+    
+    <div class="hero">
+      <h2>Transform Your Startup Idea Into Reality</h2>
+      <p>StartupLaunchpad provides comprehensive planning tools to help entrepreneurs develop, refine, and execute their business concepts.</p>
+      <button id="getStartedBtn" class="btn">Get Started</button>
+    </div>
+
+    <div class="features">
+      <div class="feature">
+        <div class="feature-icon">💡</div>
+        <h3>Idea Development</h3>
+        <p>Refine your startup concept through our intelligent workflows and expert guidance.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">🎯</div>
+        <h3>Target Audience Analysis</h3>
+        <p>Identify and understand your ideal customers to create tailored marketing strategies.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">📊</div>
+        <h3>Business Model Planning</h3>
+        <p>Develop a sustainable business model with revenue projections and growth strategies.</p>
+      </div>
+    </div>
+
+    <div class="features">
+      <div class="feature">
+        <div class="feature-icon">🔍</div>
+        <h3>Competitor Analysis</h3>
+        <p>Research competitors and identify your unique value proposition in the market.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">💰</div>
+        <h3>Revenue Strategy</h3>
+        <p>Plan your pricing, sales channels, and revenue streams for sustainable growth.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">🚀</div>
+        <h3>MVP Development</h3>
+        <p>Design your minimum viable product strategy to validate your concept quickly.</p>
+      </div>
+    </div>
+
+    <div class="cta">
+      <h3>Ready to Launch Your Startup?</h3>
+      <p>Join thousands of entrepreneurs who use StartupLaunchpad to turn ideas into successful businesses.</p>
+      <button id="joinNowBtn" class="btn">Join Now</button>
+    </div>
+  </div>
+
+  <footer>
+    <div class="container">
+      <p>&copy; 2025 StartupLaunchpad. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    // Simple event handlers for buttons
+    document.getElementById('loginBtn').addEventListener('click', () => {
+      window.location.href = '/auth';
+    });
+    
+    document.getElementById('getStartedBtn').addEventListener('click', () => {
+      window.location.href = '/auth';
+    });
+    
+    document.getElementById('joinNowBtn').addEventListener('click', () => {
+      window.location.href = '/auth';
+    });
+    
+    // API connection test
+    fetch('/api/test')
+      .then(response => response.json())
+      .then(data => {
+        console.log('API test successful:', data);
+      })
+      .catch(error => {
+        console.error('API test failed:', error);
+      });
+  </script>
+</body>
+</html>
