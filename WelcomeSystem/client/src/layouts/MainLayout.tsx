@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import Sidebar from "@/components/Sidebar";
 import { useAuth } from "@/hooks/use-auth";
-import { Bell, HelpCircle, Menu, Search } from "lucide-react";
+import { HelpCircle, Menu, Search } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import NotificationsPanel from "@/components/notifications";
 
 interface MainLayoutProps {
   children: React.ReactNode;
@@ -58,10 +59,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({
               </form>
             </div>
             <div className="ml-4 flex items-center md:ml-6">
-              <Button variant="ghost" size="icon" className="p-1 rounded-full text-gray-400 hover:text-gray-500">
-                <span className="sr-only">View notifications</span>
-                <Bell className="h-6 w-6" />
-              </Button>
+              <NotificationsPanel />
               <Button variant="ghost" size="icon" className="ml-3 p-1 rounded-full text-gray-400 hover:text-gray-500">
                 <span className="sr-only">Help center</span>
                 <HelpCircle className="h-6 w-6" />

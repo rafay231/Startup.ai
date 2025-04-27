@@ -16,8 +16,95 @@ import { useToast } from "@/hooks/use-toast";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import { Startup } from "@shared/schema";
 import { INDUSTRIES, BUSINESS_STAGES } from "@/lib/constants";
-import { PlusCircle, ArrowRight, Lightbulb, LineChart, Clock, Loader2 } from "lucide-react";
+import { PlusCircle, ArrowRight, Lightbulb, LineChart, Clock, Loader2, MessageSquare, Map, BarChart, FileText, Briefcase, Megaphone, Palette } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
+
+// Define the NewFeatures component
+interface NewFeaturesProps {
+  hasStartups: boolean;
+  startupId?: number;
+}
+
+function NewFeatures({ hasStartups, startupId }: NewFeaturesProps) {
+  const features = [
+    {
+      title: "Roadmap Planning",
+      description: "Create a strategic roadmap for your startup's journey",
+      icon: Map,
+      href: startupId ? `/startups/${startupId}/roadmap` : "/",
+      disabled: !hasStartups
+    },
+    {
+      title: "Community Forum",
+      description: "Connect with other founders and share insights",
+      icon: MessageSquare,
+      href: "/forum",
+      disabled: false
+    },
+    {
+      title: "Funding Strategy",
+      description: "Develop a comprehensive funding strategy",
+      icon: BarChart,
+      href: startupId ? `/startups/${startupId}/funding` : "/",
+      disabled: !hasStartups
+    },
+    {
+      title: "Legal Pack",
+      description: "Access essential legal documents for your startup",
+      icon: FileText,
+      href: startupId ? `/startups/${startupId}/legal` : "/",
+      disabled: !hasStartups
+    },
+    {
+      title: "Marketing Plan",
+      description: "Create a marketing strategy to reach your audience",
+      icon: Megaphone,
+      href: startupId ? `/startups/${startupId}/marketing` : "/",
+      disabled: !hasStartups
+    },
+    {
+      title: "Branding Kit",
+      description: "Design a professional brand identity",
+      icon: Palette,
+      href: startupId ? `/startups/${startupId}/branding` : "/",
+      disabled: !hasStartups
+    }
+  ];
+
+  return (
+    <div className="mb-8">
+      <h2 className="text-xl font-semibold mb-4">AI-Powered Features</h2>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {features.map((feature, index) => (
+          <Card key={index} className={feature.disabled ? "opacity-70" : ""}>
+            <CardHeader className="pb-2">
+              <div className="flex items-start justify-between">
+                <feature.icon className="h-8 w-8 text-primary" />
+                {feature.disabled && (
+                  <span className="text-xs bg-gray-200 text-gray-700 px-2 py-1 rounded">
+                    Create a startup first
+                  </span>
+                )}
+              </div>
+              <CardTitle className="text-lg mt-2">{feature.title}</CardTitle>
+              <CardDescription>{feature.description}</CardDescription>
+            </CardHeader>
+            <CardFooter>
+              <Button 
+                variant="outline" 
+                className="w-full justify-between" 
+                disabled={feature.disabled}
+                onClick={() => window.location.href = feature.href}
+              >
+                Explore <ArrowRight className="h-4 w-4" />
+              </Button>
+            </CardFooter>
+          </Card>
+        ))}
+      </div>
+    </div>
+  );
+}
 
 const createStartupSchema = z.object({
   name: z.string().min(3, "Startup name must be at least 3 characters"),
@@ -124,6 +211,11 @@ export default function Dashboard() {
           </CardContent>
         </Card>
       </div>
+
+      <NewFeatures 
+        hasStartups={hasStartups} 
+        startupId={startups && startups.length > 0 ? startups[0].id : undefined} 
+      />
 
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-xl font-semibold">Your Startups</h2>

@@ -1,0 +1,13 @@
+
+> rest-express@1.0.0 start:server
+> NODE_ENV=development tsx server/index.ts
+
+Starting server initialization on port 12000...
+Session configuration: {
+  isProduction: false,
+  cookieSettings: { sameSite: 'lax', secure: false, path: '/' }
+}
+5:07:16 PM [express] All routes registered successfully
+5:07:16 PM [express] Server started successfully on port 12000
+Server is running at http://0.0.0.0:12000
+READY - Server listening on port 12000

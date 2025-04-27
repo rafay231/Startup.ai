@@ -8,7 +8,7 @@ import { createServer } from "http";
 // OPTIMIZATION: Make sure we signal port readiness as early as possible
 // for Replit's workflow detection
 const app = express();
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 12000; // Use port 12000 as specified in the runtime information
 // Create HTTP server instance early to help with faster port binding
 const server = createServer(app);
 
@@ -17,9 +17,15 @@ console.log(`Starting server initialization on port ${port}...`);
 
 // Enable CORS for all origins to help with debugging
 app.use(cors({
-  origin: true, // Reflect the request origin
+  origin: '*', // Allow all origins
   credentials: true, // Allow credentials (cookies)
+  methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"],
+  exposedHeaders: ["Content-Length", "X-Requested-With", "X-Total-Count"]
 }));
+
+// Add preflight OPTIONS handler for all routes
+app.options('*', cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
@@ -74,11 +80,11 @@ app.get("/", (_req, res) => {
       </style>
     </head>
     <body>
-      <h1>StartupLaunchpad</h1>
+      <h1>Startup.ai</h1>
       <div class="status">
         <strong>Status:</strong> Server is running. API routes available.
       </div>
-      <p>Transform your entrepreneurial ideas into actionable business strategies.</p>
+      <p>Transform your entrepreneurial ideas into actionable business strategies with AI-powered tools.</p>
       <p>
         <a href="/api/test" class="button">Test API</a>
         <a href="/api/info" class="button">API Info</a>
@@ -88,10 +94,8 @@ app.get("/", (_req, res) => {
   `);
 });
 
-// Redirect any unmatched routes to the simplified page
-app.use("*", (_req, res) => {
-  res.redirect("/");
-});
+// API routes should be handled by the API router
+// Frontend routes should be handled by the frontend server
 
 // Then continue with the rest of the setup asynchronously
 (async () => {
