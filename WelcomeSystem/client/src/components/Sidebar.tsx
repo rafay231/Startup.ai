@@ -9,7 +9,9 @@ import {
   CheckSquare, 
   FileOutput, 
   Settings, 
-  X
+  X,
+  MessageSquare,
+  Map
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -35,6 +37,7 @@ const Sidebar: React.FC<SidebarProps> = ({ open, setOpen }) => {
     { name: "Resource Library", href: "/resources", icon: BookOpen, current: location === "/resources" },
     { name: "Task Planner", href: "/tasks", icon: CheckSquare, current: location === "/tasks" },
     { name: "Export Materials", href: "/export", icon: FileOutput, current: location === "/export" },
+    { name: "Community Forum", href: "/forum", icon: MessageSquare, current: location === "/forum" },
     { name: "Settings", href: "/settings", icon: Settings, current: location === "/settings" },
   ];
 

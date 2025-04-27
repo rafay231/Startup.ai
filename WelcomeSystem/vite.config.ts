@@ -28,4 +28,29 @@ export default defineConfig({
     outDir: path.resolve(import.meta.dirname, "dist/public"),
     emptyOutDir: true,
   },
+  server: {
+    host: "0.0.0.0",
+    port: 12002, // Use port 12002 for the frontend to avoid conflicts
+    strictPort: true,
+    cors: true,
+    hmr: {
+      clientPort: 443, // Force HMR to use HTTPS port
+      host: 'work-2-vvzgqwkpnqjlcmyq.prod-runtime.all-hands.dev'
+    },
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+      "X-Frame-Options": "ALLOWALL",
+      "Cross-Origin-Embedder-Policy": "credentialless",
+      "Cross-Origin-Opener-Policy": "same-origin",
+      "Cross-Origin-Resource-Policy": "cross-origin"
+    },
+    proxy: {
+      '/api': {
+        target: 'http://localhost:12000', // Backend API on port 12000
+        changeOrigin: true,
+        secure: false,
+        ws: true
+      }
+    }
+  }
 });

@@ -21,6 +21,11 @@ import ResourceLibrary from "@/pages/resource-library";
 import TaskPlanner from "@/pages/task-planner";
 import ExportMaterials from "@/pages/export-materials";
 
+// New feature pages
+import ForumPage from "@/pages/forum";
+import RoadmapPage from "@/pages/roadmap";
+import HealthCheck from "@/pages/HealthCheck";
+
 // Router component (simplified for compatibility)
 function Router() {
   console.log("Router component rendering");
@@ -28,6 +33,7 @@ function Router() {
     <Switch>
       <Route path="/auth" component={AuthPage} />
       <Route path="/debug" component={DebugPage} />
+      <Route path="/health" component={HealthCheck} />
       <ProtectedRoute path="/" component={Dashboard} />
       <ProtectedRoute path="/startups/:startupId/idea" component={IdeaWizard} />
       <ProtectedRoute path="/startups/:startupId/audience" component={AudienceWizard} />
@@ -38,6 +44,8 @@ function Router() {
       <ProtectedRoute path="/resources" component={ResourceLibrary} />
       <ProtectedRoute path="/tasks" component={TaskPlanner} />
       <ProtectedRoute path="/export" component={ExportMaterials} />
+      <ProtectedRoute path="/forum" component={ForumPage} />
+      <ProtectedRoute path="/startups/:startupId/roadmap" component={RoadmapPage} />
       <Route component={NotFound} />
     </Switch>
   );

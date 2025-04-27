@@ -7,6 +7,11 @@ import path from "path";
 import { insertStartupSchema, insertStartupIdeaSchema, insertTargetAudienceSchema, insertBusinessModelSchema, insertCompetitorSchema, insertRevenueModelSchema, insertMvpSchema, insertTaskSchema } from "@shared/schema";
 import { generateStartupRecommendations, generateBusinessModelSuggestions, generatePitchDeckOutline } from "./openai";
 
+// Import our new route modules
+import forumRoutes from "./routes/forum";
+import notificationRoutes from "./routes/notifications";
+import startupFeatureRoutes from "./routes/startup-features";
+
 // Add a simple diagnostic route for testing API connectivity
 export function addDiagnosticRoutes(app: Express) {
   // Health check endpoint
@@ -30,8 +35,8 @@ export function addDiagnosticRoutes(app: Express) {
   // Service info endpoint
   app.get("/api/info", (req, res) => {
     res.json({
-      name: "StartupLaunchpad API",
-      description: "Backend services for the StartupLaunchpad platform",
+      name: "Startup.ai API",
+      description: "Backend services for the Startup.ai platform",
       routes: [
         { path: "/api/health", method: "GET", description: "Health check endpoint" },
         { path: "/api/test", method: "GET", description: "Test endpoint" },
@@ -39,7 +44,11 @@ export function addDiagnosticRoutes(app: Express) {
         { path: "/api/user", method: "GET", description: "Get current user (requires auth)" },
         { path: "/api/login", method: "POST", description: "Login endpoint" },
         { path: "/api/register", method: "POST", description: "Registration endpoint" },
-        { path: "/api/logout", method: "POST", description: "Logout endpoint" }
+        { path: "/api/logout", method: "POST", description: "Logout endpoint" },
+        { path: "/api/startups", method: "GET", description: "Get user startups (requires auth)" },
+        { path: "/api/forum/posts", method: "GET", description: "Get all forum posts" },
+        { path: "/api/notifications", method: "GET", description: "Get user notifications (requires auth)" },
+        { path: "/api/startup-features/*", method: "GET/POST/PUT", description: "Startup feature endpoints" }
       ]
     });
   });
@@ -51,6 +60,11 @@ export async function registerRoutes(app: Express, existingServer?: Server): Pro
   
   // Set up authentication routes
   setupAuth(app);
+  
+  // Register our new route modules
+  app.use("/api/forum", forumRoutes);
+  app.use("/api/notifications", notificationRoutes);
+  app.use("/api/startup-features", startupFeatureRoutes);
   
   // AI Routes
   app.post("/api/ai/analyze-idea", async (req, res) => {

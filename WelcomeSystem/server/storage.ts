@@ -1,5 +1,26 @@
-import { users, startups, startupIdeas, targetAudiences, businessModels, competitors, revenueModels, mvps, tasks, resources } from "@shared/schema";
-import type { User, InsertUser, Startup, InsertStartup, StartupIdea, InsertStartupIdea, TargetAudience, InsertTargetAudience, BusinessModel, InsertBusinessModel, Competitor, InsertCompetitor, RevenueModel, InsertRevenueModel, Mvp, InsertMvp, Task, InsertTask, Resource, InsertResource } from "@shared/schema";
+import { users, startups, startupIdeas, targetAudiences, businessModels, competitors, revenueModels, mvps, roadmaps, fundingStrategies, scalabilityPlans, launchToolkits, legalPacks, marketingPlans, brandingKits, tasks, resources, forumPosts, forumComments, notifications } from "@shared/schema";
+import type { 
+  User, InsertUser, 
+  Startup, InsertStartup, 
+  StartupIdea, InsertStartupIdea, 
+  TargetAudience, InsertTargetAudience, 
+  BusinessModel, InsertBusinessModel, 
+  Competitor, InsertCompetitor, 
+  RevenueModel, InsertRevenueModel, 
+  Mvp, InsertMvp, 
+  Roadmap, InsertRoadmap,
+  FundingStrategy, InsertFundingStrategy,
+  ScalabilityPlan, InsertScalabilityPlan,
+  LaunchToolkit, InsertLaunchToolkit,
+  LegalPack, InsertLegalPack,
+  MarketingPlan, InsertMarketingPlan,
+  BrandingKit, InsertBrandingKit,
+  Task, InsertTask, 
+  Resource, InsertResource,
+  ForumPost, InsertForumPost,
+  ForumComment, InsertForumComment,
+  Notification, InsertNotification
+} from "@shared/schema";
 import session from "express-session";
 import createMemoryStore from "memorystore";
 
@@ -10,7 +31,11 @@ export interface IStorage {
   getUser(id: number): Promise<User | undefined>;
   getUserByUsername(username: string): Promise<User | undefined>;
   getUserByEmail(email: string): Promise<User | undefined>;
+  getUserByGoogleId(googleId: string): Promise<User | undefined>;
+  getUserByLinkedinId(linkedinId: string): Promise<User | undefined>;
   createUser(user: InsertUser): Promise<User>;
+  updateUser(id: number, user: Partial<User>): Promise<User | undefined>;
+  updateUserAnalytics(id: number, analytics: any): Promise<User | undefined>;
   
   // Startup methods
   getStartup(id: number): Promise<Startup | undefined>;
@@ -49,6 +74,41 @@ export interface IStorage {
   createMvp(mvp: InsertMvp): Promise<Mvp>;
   updateMvp(startupId: number, mvp: Partial<Mvp>): Promise<Mvp | undefined>;
   
+  // Roadmap methods
+  getRoadmap(startupId: number): Promise<Roadmap | undefined>;
+  createRoadmap(roadmap: InsertRoadmap): Promise<Roadmap>;
+  updateRoadmap(startupId: number, roadmap: Partial<Roadmap>): Promise<Roadmap | undefined>;
+  
+  // Funding Strategy methods
+  getFundingStrategy(startupId: number): Promise<FundingStrategy | undefined>;
+  createFundingStrategy(strategy: InsertFundingStrategy): Promise<FundingStrategy>;
+  updateFundingStrategy(startupId: number, strategy: Partial<FundingStrategy>): Promise<FundingStrategy | undefined>;
+  
+  // Scalability Plan methods
+  getScalabilityPlan(startupId: number): Promise<ScalabilityPlan | undefined>;
+  createScalabilityPlan(plan: InsertScalabilityPlan): Promise<ScalabilityPlan>;
+  updateScalabilityPlan(startupId: number, plan: Partial<ScalabilityPlan>): Promise<ScalabilityPlan | undefined>;
+  
+  // Launch Toolkit methods
+  getLaunchToolkit(startupId: number): Promise<LaunchToolkit | undefined>;
+  createLaunchToolkit(toolkit: InsertLaunchToolkit): Promise<LaunchToolkit>;
+  updateLaunchToolkit(startupId: number, toolkit: Partial<LaunchToolkit>): Promise<LaunchToolkit | undefined>;
+  
+  // Legal Pack methods
+  getLegalPack(startupId: number): Promise<LegalPack | undefined>;
+  createLegalPack(pack: InsertLegalPack): Promise<LegalPack>;
+  updateLegalPack(startupId: number, pack: Partial<LegalPack>): Promise<LegalPack | undefined>;
+  
+  // Marketing Plan methods
+  getMarketingPlan(startupId: number): Promise<MarketingPlan | undefined>;
+  createMarketingPlan(plan: InsertMarketingPlan): Promise<MarketingPlan>;
+  updateMarketingPlan(startupId: number, plan: Partial<MarketingPlan>): Promise<MarketingPlan | undefined>;
+  
+  // Branding Kit methods
+  getBrandingKit(startupId: number): Promise<BrandingKit | undefined>;
+  createBrandingKit(kit: InsertBrandingKit): Promise<BrandingKit>;
+  updateBrandingKit(startupId: number, kit: Partial<BrandingKit>): Promise<BrandingKit | undefined>;
+  
   // Task methods
   getTasksByStartupId(startupId: number): Promise<Task[]>;
   getTask(id: number): Promise<Task | undefined>;
@@ -61,6 +121,32 @@ export interface IStorage {
   getResourcesByCategory(category: string): Promise<Resource[]>;
   getResourcesByIndustry(industry: string): Promise<Resource[]>;
   getResource(id: number): Promise<Resource | undefined>;
+  createResource(resource: InsertResource): Promise<Resource>;
+  updateResource(id: number, resource: Partial<Resource>): Promise<Resource | undefined>;
+  deleteResource(id: number): Promise<boolean>;
+  
+  // Forum methods
+  getForumPosts(): Promise<ForumPost[]>;
+  getForumPostsByCategory(category: string): Promise<ForumPost[]>;
+  getForumPostsByUser(userId: number): Promise<ForumPost[]>;
+  getForumPost(id: number): Promise<ForumPost | undefined>;
+  createForumPost(post: InsertForumPost): Promise<ForumPost>;
+  updateForumPost(id: number, post: Partial<ForumPost>): Promise<ForumPost | undefined>;
+  deleteForumPost(id: number): Promise<boolean>;
+  
+  // Forum Comment methods
+  getForumComments(postId: number): Promise<ForumComment[]>;
+  getForumComment(id: number): Promise<ForumComment | undefined>;
+  createForumComment(comment: InsertForumComment): Promise<ForumComment>;
+  updateForumComment(id: number, comment: Partial<ForumComment>): Promise<ForumComment | undefined>;
+  deleteForumComment(id: number): Promise<boolean>;
+  
+  // Notification methods
+  getNotifications(userId: number): Promise<Notification[]>;
+  getUnreadNotifications(userId: number): Promise<Notification[]>;
+  createNotification(notification: InsertNotification): Promise<Notification>;
+  markNotificationAsRead(id: number): Promise<Notification | undefined>;
+  deleteNotification(id: number): Promise<boolean>;
   
   // Session store
   sessionStore: session.SessionStore;
@@ -75,8 +161,18 @@ export class MemStorage implements IStorage {
   private competitors: Map<number, Competitor>;
   private revenueModels: Map<number, RevenueModel>;
   private mvps: Map<number, Mvp>;
+  private roadmaps: Map<number, Roadmap>;
+  private fundingStrategies: Map<number, FundingStrategy>;
+  private scalabilityPlans: Map<number, ScalabilityPlan>;
+  private launchToolkits: Map<number, LaunchToolkit>;
+  private legalPacks: Map<number, LegalPack>;
+  private marketingPlans: Map<number, MarketingPlan>;
+  private brandingKits: Map<number, BrandingKit>;
   private tasks: Map<number, Task>;
   private resources: Map<number, Resource>;
+  private forumPosts: Map<number, ForumPost>;
+  private forumComments: Map<number, ForumComment>;
+  private notifications: Map<number, Notification>;
   
   sessionStore: session.SessionStore;
   
@@ -88,8 +184,18 @@ export class MemStorage implements IStorage {
   private competitorIdCounter: number;
   private revenueModelIdCounter: number;
   private mvpIdCounter: number;
+  private roadmapIdCounter: number;
+  private fundingStrategyIdCounter: number;
+  private scalabilityPlanIdCounter: number;
+  private launchToolkitIdCounter: number;
+  private legalPackIdCounter: number;
+  private marketingPlanIdCounter: number;
+  private brandingKitIdCounter: number;
   private taskIdCounter: number;
   private resourceIdCounter: number;
+  private forumPostIdCounter: number;
+  private forumCommentIdCounter: number;
+  private notificationIdCounter: number;
 
   constructor() {
     this.users = new Map();
@@ -100,8 +206,18 @@ export class MemStorage implements IStorage {
     this.competitors = new Map();
     this.revenueModels = new Map();
     this.mvps = new Map();
+    this.roadmaps = new Map();
+    this.fundingStrategies = new Map();
+    this.scalabilityPlans = new Map();
+    this.launchToolkits = new Map();
+    this.legalPacks = new Map();
+    this.marketingPlans = new Map();
+    this.brandingKits = new Map();
     this.tasks = new Map();
     this.resources = new Map();
+    this.forumPosts = new Map();
+    this.forumComments = new Map();
+    this.notifications = new Map();
     
     this.userIdCounter = 1;
     this.startupIdCounter = 1;
@@ -111,8 +227,18 @@ export class MemStorage implements IStorage {
     this.competitorIdCounter = 1;
     this.revenueModelIdCounter = 1;
     this.mvpIdCounter = 1;
+    this.roadmapIdCounter = 1;
+    this.fundingStrategyIdCounter = 1;
+    this.scalabilityPlanIdCounter = 1;
+    this.launchToolkitIdCounter = 1;
+    this.legalPackIdCounter = 1;
+    this.marketingPlanIdCounter = 1;
+    this.brandingKitIdCounter = 1;
     this.taskIdCounter = 1;
     this.resourceIdCounter = 1;
+    this.forumPostIdCounter = 1;
+    this.forumCommentIdCounter = 1;
+    this.notificationIdCounter = 1;
     
     this.sessionStore = new MemoryStore({
       checkPeriod: 86400000 // 24 hours
@@ -138,13 +264,59 @@ export class MemStorage implements IStorage {
       (user) => user.email === email,
     );
   }
+  
+  async getUserByGoogleId(googleId: string): Promise<User | undefined> {
+    return Array.from(this.users.values()).find(
+      (user) => user.googleId === googleId,
+    );
+  }
+  
+  async getUserByLinkedinId(linkedinId: string): Promise<User | undefined> {
+    return Array.from(this.users.values()).find(
+      (user) => user.linkedinId === linkedinId,
+    );
+  }
 
   async createUser(insertUser: InsertUser): Promise<User> {
     const id = this.userIdCounter++;
     const now = new Date();
-    const user: User = { ...insertUser, id, createdAt: now };
+    const user: User = { 
+      ...insertUser, 
+      id, 
+      createdAt: now,
+      updatedAt: now,
+      twoFactorEnabled: false
+    };
     this.users.set(id, user);
     return user;
+  }
+  
+  async updateUser(id: number, userData: Partial<User>): Promise<User | undefined> {
+    const user = await this.getUser(id);
+    if (!user) return undefined;
+    
+    const updatedUser = {
+      ...user,
+      ...userData,
+      updatedAt: new Date(),
+    };
+    
+    this.users.set(id, updatedUser);
+    return updatedUser;
+  }
+  
+  async updateUserAnalytics(id: number, analytics: any): Promise<User | undefined> {
+    const user = await this.getUser(id);
+    if (!user) return undefined;
+    
+    const updatedUser = {
+      ...user,
+      userAnalytics: analytics,
+      updatedAt: new Date(),
+    };
+    
+    this.users.set(id, updatedUser);
+    return updatedUser;
   }
   
   // Startup methods
@@ -363,6 +535,209 @@ export class MemStorage implements IStorage {
     return updatedMvp;
   }
   
+  // Roadmap methods
+  async getRoadmap(startupId: number): Promise<Roadmap | undefined> {
+    return Array.from(this.roadmaps.values()).find(
+      (roadmap) => roadmap.startupId === startupId,
+    );
+  }
+  
+  async createRoadmap(roadmap: InsertRoadmap): Promise<Roadmap> {
+    const id = this.roadmapIdCounter++;
+    const newRoadmap: Roadmap = { ...roadmap, id };
+    this.roadmaps.set(id, newRoadmap);
+    
+    // Update startup progress
+    await this.updateStartupProgress(roadmap.startupId);
+    
+    return newRoadmap;
+  }
+  
+  async updateRoadmap(startupId: number, roadmap: Partial<Roadmap>): Promise<Roadmap | undefined> {
+    const existingRoadmap = Array.from(this.roadmaps.values()).find(
+      (r) => r.startupId === startupId,
+    );
+    if (!existingRoadmap) return undefined;
+    
+    const updatedRoadmap = { ...existingRoadmap, ...roadmap };
+    this.roadmaps.set(existingRoadmap.id, updatedRoadmap);
+    return updatedRoadmap;
+  }
+  
+  // Funding Strategy methods
+  async getFundingStrategy(startupId: number): Promise<FundingStrategy | undefined> {
+    return Array.from(this.fundingStrategies.values()).find(
+      (strategy) => strategy.startupId === startupId,
+    );
+  }
+  
+  async createFundingStrategy(strategy: InsertFundingStrategy): Promise<FundingStrategy> {
+    const id = this.fundingStrategyIdCounter++;
+    const newStrategy: FundingStrategy = { ...strategy, id };
+    this.fundingStrategies.set(id, newStrategy);
+    
+    // Update startup progress
+    await this.updateStartupProgress(strategy.startupId);
+    
+    return newStrategy;
+  }
+  
+  async updateFundingStrategy(startupId: number, strategy: Partial<FundingStrategy>): Promise<FundingStrategy | undefined> {
+    const existingStrategy = Array.from(this.fundingStrategies.values()).find(
+      (s) => s.startupId === startupId,
+    );
+    if (!existingStrategy) return undefined;
+    
+    const updatedStrategy = { ...existingStrategy, ...strategy };
+    this.fundingStrategies.set(existingStrategy.id, updatedStrategy);
+    return updatedStrategy;
+  }
+  
+  // Scalability Plan methods
+  async getScalabilityPlan(startupId: number): Promise<ScalabilityPlan | undefined> {
+    return Array.from(this.scalabilityPlans.values()).find(
+      (plan) => plan.startupId === startupId,
+    );
+  }
+  
+  async createScalabilityPlan(plan: InsertScalabilityPlan): Promise<ScalabilityPlan> {
+    const id = this.scalabilityPlanIdCounter++;
+    const newPlan: ScalabilityPlan = { ...plan, id };
+    this.scalabilityPlans.set(id, newPlan);
+    
+    // Update startup progress
+    await this.updateStartupProgress(plan.startupId);
+    
+    return newPlan;
+  }
+  
+  async updateScalabilityPlan(startupId: number, plan: Partial<ScalabilityPlan>): Promise<ScalabilityPlan | undefined> {
+    const existingPlan = Array.from(this.scalabilityPlans.values()).find(
+      (p) => p.startupId === startupId,
+    );
+    if (!existingPlan) return undefined;
+    
+    const updatedPlan = { ...existingPlan, ...plan };
+    this.scalabilityPlans.set(existingPlan.id, updatedPlan);
+    return updatedPlan;
+  }
+  
+  // Launch Toolkit methods
+  async getLaunchToolkit(startupId: number): Promise<LaunchToolkit | undefined> {
+    return Array.from(this.launchToolkits.values()).find(
+      (toolkit) => toolkit.startupId === startupId,
+    );
+  }
+  
+  async createLaunchToolkit(toolkit: InsertLaunchToolkit): Promise<LaunchToolkit> {
+    const id = this.launchToolkitIdCounter++;
+    const newToolkit: LaunchToolkit = { ...toolkit, id };
+    this.launchToolkits.set(id, newToolkit);
+    
+    // Update startup progress
+    await this.updateStartupProgress(toolkit.startupId);
+    
+    return newToolkit;
+  }
+  
+  async updateLaunchToolkit(startupId: number, toolkit: Partial<LaunchToolkit>): Promise<LaunchToolkit | undefined> {
+    const existingToolkit = Array.from(this.launchToolkits.values()).find(
+      (t) => t.startupId === startupId,
+    );
+    if (!existingToolkit) return undefined;
+    
+    const updatedToolkit = { ...existingToolkit, ...toolkit };
+    this.launchToolkits.set(existingToolkit.id, updatedToolkit);
+    return updatedToolkit;
+  }
+  
+  // Legal Pack methods
+  async getLegalPack(startupId: number): Promise<LegalPack | undefined> {
+    return Array.from(this.legalPacks.values()).find(
+      (pack) => pack.startupId === startupId,
+    );
+  }
+  
+  async createLegalPack(pack: InsertLegalPack): Promise<LegalPack> {
+    const id = this.legalPackIdCounter++;
+    const newPack: LegalPack = { ...pack, id };
+    this.legalPacks.set(id, newPack);
+    
+    // Update startup progress
+    await this.updateStartupProgress(pack.startupId);
+    
+    return newPack;
+  }
+  
+  async updateLegalPack(startupId: number, pack: Partial<LegalPack>): Promise<LegalPack | undefined> {
+    const existingPack = Array.from(this.legalPacks.values()).find(
+      (p) => p.startupId === startupId,
+    );
+    if (!existingPack) return undefined;
+    
+    const updatedPack = { ...existingPack, ...pack };
+    this.legalPacks.set(existingPack.id, updatedPack);
+    return updatedPack;
+  }
+  
+  // Marketing Plan methods
+  async getMarketingPlan(startupId: number): Promise<MarketingPlan | undefined> {
+    return Array.from(this.marketingPlans.values()).find(
+      (plan) => plan.startupId === startupId,
+    );
+  }
+  
+  async createMarketingPlan(plan: InsertMarketingPlan): Promise<MarketingPlan> {
+    const id = this.marketingPlanIdCounter++;
+    const newPlan: MarketingPlan = { ...plan, id };
+    this.marketingPlans.set(id, newPlan);
+    
+    // Update startup progress
+    await this.updateStartupProgress(plan.startupId);
+    
+    return newPlan;
+  }
+  
+  async updateMarketingPlan(startupId: number, plan: Partial<MarketingPlan>): Promise<MarketingPlan | undefined> {
+    const existingPlan = Array.from(this.marketingPlans.values()).find(
+      (p) => p.startupId === startupId,
+    );
+    if (!existingPlan) return undefined;
+    
+    const updatedPlan = { ...existingPlan, ...plan };
+    this.marketingPlans.set(existingPlan.id, updatedPlan);
+    return updatedPlan;
+  }
+  
+  // Branding Kit methods
+  async getBrandingKit(startupId: number): Promise<BrandingKit | undefined> {
+    return Array.from(this.brandingKits.values()).find(
+      (kit) => kit.startupId === startupId,
+    );
+  }
+  
+  async createBrandingKit(kit: InsertBrandingKit): Promise<BrandingKit> {
+    const id = this.brandingKitIdCounter++;
+    const newKit: BrandingKit = { ...kit, id };
+    this.brandingKits.set(id, newKit);
+    
+    // Update startup progress
+    await this.updateStartupProgress(kit.startupId);
+    
+    return newKit;
+  }
+  
+  async updateBrandingKit(startupId: number, kit: Partial<BrandingKit>): Promise<BrandingKit | undefined> {
+    const existingKit = Array.from(this.brandingKits.values()).find(
+      (k) => k.startupId === startupId,
+    );
+    if (!existingKit) return undefined;
+    
+    const updatedKit = { ...existingKit, ...kit };
+    this.brandingKits.set(existingKit.id, updatedKit);
+    return updatedKit;
+  }
+  
   // Task methods
   async getTasksByStartupId(startupId: number): Promise<Task[]> {
     return Array.from(this.tasks.values()).filter(
@@ -415,6 +790,37 @@ export class MemStorage implements IStorage {
     return this.resources.get(id);
   }
   
+  async createResource(resource: InsertResource): Promise<Resource> {
+    const id = this.resourceIdCounter++;
+    const now = new Date();
+    const newResource: Resource = { 
+      ...resource, 
+      id,
+      createdAt: now,
+      updatedAt: now,
+      featured: resource.featured || false
+    };
+    this.resources.set(id, newResource);
+    return newResource;
+  }
+  
+  async updateResource(id: number, resource: Partial<Resource>): Promise<Resource | undefined> {
+    const existingResource = this.resources.get(id);
+    if (!existingResource) return undefined;
+    
+    const updatedResource = { 
+      ...existingResource, 
+      ...resource,
+      updatedAt: new Date()
+    };
+    this.resources.set(id, updatedResource);
+    return updatedResource;
+  }
+  
+  async deleteResource(id: number): Promise<boolean> {
+    return this.resources.delete(id);
+  }
+  
   // Helper methods
   private async updateStartupProgress(startupId: number): Promise<void> {
     const startup = await this.getStartup(startupId);
@@ -427,11 +833,18 @@ export class MemStorage implements IStorage {
       await this.getBusinessModel(startupId),
       await this.getCompetitor(startupId),
       await this.getRevenueModel(startupId),
-      await this.getMvp(startupId)
+      await this.getMvp(startupId),
+      await this.getRoadmap(startupId),
+      await this.getFundingStrategy(startupId),
+      await this.getScalabilityPlan(startupId),
+      await this.getLaunchToolkit(startupId),
+      await this.getLegalPack(startupId),
+      await this.getMarketingPlan(startupId),
+      await this.getBrandingKit(startupId)
     ];
     
     const completedSteps = steps.filter(step => !!step).length;
-    const progress = Math.floor((completedSteps / 6) * 100);
+    const progress = Math.floor((completedSteps / 13) * 100);
     
     await this.updateStartup(startupId, { progress });
   }
@@ -510,6 +923,140 @@ export class MemStorage implements IStorage {
       const id = this.resourceIdCounter++;
       this.resources.set(id, { ...resource, id });
     });
+  }
+  
+  // Forum Post methods
+  async getForumPosts(): Promise<ForumPost[]> {
+    return Array.from(this.forumPosts.values());
+  }
+  
+  async getForumPostsByCategory(category: string): Promise<ForumPost[]> {
+    return Array.from(this.forumPosts.values()).filter(
+      (post) => post.category === category,
+    );
+  }
+  
+  async getForumPostsByUser(userId: number): Promise<ForumPost[]> {
+    return Array.from(this.forumPosts.values()).filter(
+      (post) => post.userId === userId,
+    );
+  }
+  
+  async getForumPost(id: number): Promise<ForumPost | undefined> {
+    return this.forumPosts.get(id);
+  }
+  
+  async createForumPost(post: InsertForumPost): Promise<ForumPost> {
+    const id = this.forumPostIdCounter++;
+    const now = new Date();
+    const newPost: ForumPost = { 
+      ...post, 
+      id, 
+      createdAt: now,
+      updatedAt: now,
+      likes: 0,
+      views: 0
+    };
+    this.forumPosts.set(id, newPost);
+    return newPost;
+  }
+  
+  async updateForumPost(id: number, post: Partial<ForumPost>): Promise<ForumPost | undefined> {
+    const existingPost = this.forumPosts.get(id);
+    if (!existingPost) return undefined;
+    
+    const updatedPost = { 
+      ...existingPost, 
+      ...post,
+      updatedAt: new Date()
+    };
+    this.forumPosts.set(id, updatedPost);
+    return updatedPost;
+  }
+  
+  async deleteForumPost(id: number): Promise<boolean> {
+    return this.forumPosts.delete(id);
+  }
+  
+  // Forum Comment methods
+  async getForumComments(postId: number): Promise<ForumComment[]> {
+    return Array.from(this.forumComments.values()).filter(
+      (comment) => comment.postId === postId,
+    );
+  }
+  
+  async getForumComment(id: number): Promise<ForumComment | undefined> {
+    return this.forumComments.get(id);
+  }
+  
+  async createForumComment(comment: InsertForumComment): Promise<ForumComment> {
+    const id = this.forumCommentIdCounter++;
+    const now = new Date();
+    const newComment: ForumComment = { 
+      ...comment, 
+      id, 
+      createdAt: now,
+      updatedAt: now,
+      likes: 0
+    };
+    this.forumComments.set(id, newComment);
+    return newComment;
+  }
+  
+  async updateForumComment(id: number, comment: Partial<ForumComment>): Promise<ForumComment | undefined> {
+    const existingComment = this.forumComments.get(id);
+    if (!existingComment) return undefined;
+    
+    const updatedComment = { 
+      ...existingComment, 
+      ...comment,
+      updatedAt: new Date()
+    };
+    this.forumComments.set(id, updatedComment);
+    return updatedComment;
+  }
+  
+  async deleteForumComment(id: number): Promise<boolean> {
+    return this.forumComments.delete(id);
+  }
+  
+  // Notification methods
+  async getNotifications(userId: number): Promise<Notification[]> {
+    return Array.from(this.notifications.values()).filter(
+      (notification) => notification.userId === userId,
+    );
+  }
+  
+  async getUnreadNotifications(userId: number): Promise<Notification[]> {
+    return Array.from(this.notifications.values()).filter(
+      (notification) => notification.userId === userId && !notification.read,
+    );
+  }
+  
+  async createNotification(notification: InsertNotification): Promise<Notification> {
+    const id = this.notificationIdCounter++;
+    const now = new Date();
+    const newNotification: Notification = { 
+      ...notification, 
+      id, 
+      createdAt: now,
+      read: false
+    };
+    this.notifications.set(id, newNotification);
+    return newNotification;
+  }
+  
+  async markNotificationAsRead(id: number): Promise<Notification | undefined> {
+    const notification = this.notifications.get(id);
+    if (!notification) return undefined;
+    
+    const updatedNotification = { ...notification, read: true };
+    this.notifications.set(id, updatedNotification);
+    return updatedNotification;
+  }
+  
+  async deleteNotification(id: number): Promise<boolean> {
+    return this.notifications.delete(id);
   }
 }
 

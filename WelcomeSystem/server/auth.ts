@@ -28,6 +28,14 @@ async function comparePasswords(supplied: string, stored: string) {
   return timingSafeEqual(hashedBuf, suppliedBuf);
 }
 
+// Middleware to check if user is authenticated
+export const isAuthenticated = (req: Express.Request, res: Express.Response, next: Express.NextFunction) => {
+  if (!req.isAuthenticated()) {
+    return res.status(401).json({ error: "Unauthorized" });
+  }
+  next();
+};
+
 export function setupAuth(app: Express) {
   const isProduction = process.env.NODE_ENV === "production";
   
