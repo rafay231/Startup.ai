@@ -35,7 +35,7 @@ export default defineConfig({
     cors: true,
     hmr: {
       clientPort: 443, // Force HMR to use HTTPS port
-      host: 'work-2-vvzgqwkpnqjlcmyq.prod-runtime.all-hands.dev'
+      host: 'work-2-emnquxgnqihxybsn.prod-runtime.all-hands.dev'
     },
     headers: {
       "Access-Control-Allow-Origin": "*",
