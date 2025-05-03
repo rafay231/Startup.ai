@@ -58,6 +58,7 @@ server.listen(Number(port), "0.0.0.0", () => {
 
 // Serve static files from the client/dist directory
 const clientDistPath = path.join(__dirname, '../client/dist');
+console.log('Static files path:', clientDistPath);
 app.use(express.static(clientDistPath));
 
 // Serve a more comprehensive landing page for the root path
