@@ -1,14 +1,20 @@
 import { QueryClient, QueryFunction } from "@tanstack/react-query";
 
-// Helper to get base URL for API requests - simplified approach
+// Helper to get base URL for API requests
 const getApiBaseUrl = () => {
   // In Node.js environment (should never happen in this app)
-  if (typeof window === 'undefined') return 'http://localhost:5000';
+  if (typeof window === 'undefined') return 'http://localhost:12000';
   
-  // Use relative URLs for all environments
-  // This works better with Replit's proxy setup
+  // Use the environment variable if available
+  const envApiUrl = import.meta.env.VITE_API_URL;
+  if (envApiUrl) {
+    console.log(`Using API URL from environment: ${envApiUrl}`);
+    return envApiUrl;
+  }
+  
+  // Fallback to relative URL
   console.log('Using relative URL for API requests');
-  return '';
+  return '/api';
 };
 
 // Simple retry mechanism for failed requests
