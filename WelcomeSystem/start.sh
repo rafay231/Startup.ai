@@ -5,38 +5,41 @@ pkill -f "node" || true
 
 # Set environment variables
 export PORT=12000
-export VITE_PORT=12001
-export VITE_API_URL=http://localhost:12000
+export NODE_ENV=development
 
-# Start the backend server
-echo "Starting backend server on port $PORT..."
+# Build the frontend first
+echo "Building frontend..."
 cd /workspace/Startup.ai/WelcomeSystem
-NODE_ENV=development npm run dev > backend.log 2>&1 &
-BACKEND_PID=$!
+npm run build
 
-# Wait for backend to start
-sleep 5
+# Start the server
+echo "Starting server on port $PORT..."
+cd /workspace/Startup.ai/WelcomeSystem
+node new-server.js > server.log 2>&1 &
+SERVER_PID=$!
 
-# Check if backend is running
-if ! ps -p $BACKEND_PID > /dev/null; then
-  echo "Backend server failed to start. Check backend.log for details."
-  cat backend.log
+# Wait for server to start
+sleep 3
+
+# Check if server is running
+if ! ps -p $SERVER_PID > /dev/null; then
+  echo "Server failed to start. Check server.log for details."
+  cat server.log
   exit 1
 fi
 
-echo "Backend server started with PID $BACKEND_PID"
-echo "Backend logs are being written to backend.log"
+echo "Server started with PID $SERVER_PID"
+echo "Server logs are being written to server.log"
+echo "Server URL: https://work-1-emnquxgnqihxybsn.prod-runtime.all-hands.dev"
+echo "AI Demo URL: https://work-1-emnquxgnqihxybsn.prod-runtime.all-hands.dev/ai-demo.html"
 
-# Start the frontend server
-echo "Starting frontend server on port $VITE_PORT..."
-echo "Frontend URL: https://work-2-vvzgqwkpnqjlcmyq.prod-runtime.all-hands.dev"
-cd /workspace/Startup.ai/WelcomeSystem
-npx vite --port $VITE_PORT --host 0.0.0.0
+# Keep the script running to see logs
+tail -f server.log
 
 # Function to handle script termination
 cleanup() {
-  echo "Shutting down servers..."
-  kill $BACKEND_PID
+  echo "Shutting down server..."
+  kill $SERVER_PID
   exit 0
 }
 
