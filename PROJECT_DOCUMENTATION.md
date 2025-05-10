@@ -68,8 +68,8 @@ VITE_API_URL=http://localhost:12000
 - Frontend: 12002
 
 ## External URLs
-- Backend: https://work-1-vvzgqwkpnqjlcmyq.prod-runtime.all-hands.dev
-- Frontend: https://work-2-vvzgqwkpnqjlcmyq.prod-runtime.all-hands.dev
+- Backend: https://work-1-emnquxgnqihxybsn.prod-runtime.all-hands.dev
+- Frontend: https://work-2-emnquxgnqihxybsn.prod-runtime.all-hands.dev
 
 ## Key Files and Directories
 - `/WelcomeSystem/server/index.ts`: Main server entry point

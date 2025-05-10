@@ -8,7 +8,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
-const PORT = process.env.PORT || 12000;
+const PORT = process.env.PORT || 12001;
 
 // Enable CORS for all routes
 app.use(cors({
@@ -16,6 +16,12 @@ app.use(cors({
   credentials: true,
   exposedHeaders: ['Content-Length', 'X-Requested-With', 'X-Total-Count']
 }));
+
+// Add request logging middleware
+app.use((req, res, next) => {
+  console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
+  next();
+});
 
 // Parse JSON request bodies
 app.use(express.json());
@@ -32,7 +38,8 @@ app.get('/api/health', (req, res) => {
     uptime,
     timestamp: new Date().toISOString(),
     environment: process.env.NODE_ENV || 'development',
-    port: PORT
+    port: PORT,
+    server: 'second-server'
   });
 });
 
@@ -42,7 +49,7 @@ app.get('/', (req, res) => {
   res.send(`
     <html>
       <head>
-        <title>Startup.ai - Server Status</title>
+        <title>Startup.ai - Server Status (Second Server)</title>
         <style>
           body { font-family: system-ui, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
           h1 { color: #0070f3; }
@@ -54,7 +61,7 @@ app.get('/', (req, res) => {
         </style>
       </head>
       <body>
-        <h1>Startup.ai Server</h1>
+        <h1>Startup.ai Server (Second Instance)</h1>
         <div class="card">
           <h2>Server Status: <span class="success">Running</span></h2>
           <p>Server is running on port ${PORT}</p>
@@ -135,7 +142,7 @@ app.post('/api/ai/demo/analyze-idea', (req, res) => {
 // Add a test endpoint that returns plain text
 app.get('/test', (req, res) => {
   console.log('Test endpoint requested');
-  res.send('Server is working correctly');
+  res.send('Second server is working correctly');
 });
 
 // Fallback for all routes - serve index.html for SPA routing
@@ -146,7 +153,7 @@ app.get('*', (req, res) => {
 
 // Start the server
 app.listen(PORT, '0.0.0.0', () => {
-  console.log(`Server running on port ${PORT}`);
+  console.log(`Second server running on port ${PORT}`);
   console.log(`Server is running on http://0.0.0.0:${PORT}`);
   console.log(`Serving static files from: ${path.join(__dirname, 'public')}`);
   console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
